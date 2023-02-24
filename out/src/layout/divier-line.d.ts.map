@@ -1,0 +1,1 @@
+{"version":3,"file":"divier-line.d.ts","sourceRoot":"","sources":["../../../src/layout/divier-line.ts"],"names":[],"mappings":"AAAA,OAAO,EAAa,UAAU,EAAE,MAAM,KAAK,CAAC;AAG5C,qBACa,UAAW,SAAQ,UAAU;IACxC,MAAM,CAAC,MAAM,0BAkBR;IACO,GAAG,SAAU;IACb,GAAG,SAAU;IACI,CAAC,UAAS;IAC3B,CAAC,SAAS;IACtB,MAAM;CASP;AACD,OAAO,CAAC,MAAM,CAAC;IACb,UAAU,qBAAqB;QAC7B,aAAa,EAAE,UAAU,CAAC;KAC3B;CACF"}

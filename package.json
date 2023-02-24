@@ -1,0 +1,40 @@
+{
+  "name": "godown",
+  "version": "1.0.0",
+  "main": "./out/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "wds --node-resolve --open --watch",
+    "build": "tsc -w",
+    "babel": "babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["godown","components"],
+  "author": "startrace",
+  "license": "MIT",
+  "description": "simple,sylized,semantic components",
+  "dependencies": {
+    "lit": "^2.6.1",
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.20.7",
+    "@babel/core": "^7.20.12",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-decorators": "^7.20.7",
+    "@custom-elements-manifest/analyzer": "^0.6.3",
+    "@lit-labs/react": "^1.1.1",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@rollup/plugin-replace": "^4.0.0",
+    "@types/react": "^18.0.28",
+    "@typescript-eslint/eslint-plugin": "^5.25.0",
+    "@typescript-eslint/parser": "^5.25.0",
+    "@web/dev-server": "^0.1.35",
+    "@web/dev-server-esbuild": "^0.3.3",
+    "@web/dev-server-legacy": "^1.0.0",
+    "@webcomponents/webcomponentsjs": "^2.6.0",
+    "esbuild": "^0.17.3",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.73.0"
+  }
+}

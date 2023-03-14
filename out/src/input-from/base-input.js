@@ -5,26 +5,21 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, query } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { name, theme } from "../config.js";
 let BaseInput = class BaseInput extends LitElement {
     constructor() {
         super(...arguments);
         this.label = '';
         this.name = '';
-        this.pla = '';
+        this.pla = undefined;
         this.type = 'text';
         this.value = '';
         this.def = '';
         this.min = 0;
         this.max = 100;
         this.step = 1;
-    }
-    get _input() {
-        return this.shadowRoot.querySelector('input');
-    }
-    get _ranged() {
-        return this.shadowRoot.querySelector('.range i');
     }
     render() {
         if (!this.name)
@@ -39,9 +34,8 @@ let BaseInput = class BaseInput extends LitElement {
       <slot name="suf"></slot></div>`;
     }
     firstUpdated() {
-        var _a;
         if (!this.def)
-            this.def = (_a = this.value) !== null && _a !== void 0 ? _a : "";
+            this.def = this.value || "";
         if (!this.value)
             this.value = this.def;
         if (this.type === "range") {
@@ -83,7 +77,7 @@ let BaseInput = class BaseInput extends LitElement {
             case "range":
                 return html `<input type="range" @input=${this._handleRange} min=${this.min} max=${this.max} step=${this.step} value=${this.value} ><i></i>`;
             default:
-                return html `<input class="input" type=${this.type} name=${this.name} placeholder=${this.pla} value=${this.value} @input=${this._handleInput} />`;
+                return html `<input class="input" type=${this.type} placeholder=${ifDefined(this.pla)} value=${this.value} @input=${this._handleInput} />`;
         }
     }
     namevalue() {
@@ -95,15 +89,15 @@ BaseInput.styles = [theme, css `
     display: inline-flex;
     background-color: var(--input-background);
     border-radius: .2em;
-    outline:.18em solid transparent ;
+    outline: .14em solid transparent;
+    color:var(--text);
   }
   :host(:focus){
     outline-color:var(--input-outline);
   }
   div{
-    margin: 0 -.25em;
     display: flex;
-    flex:1;
+    flex: 1;
   }
   *{
     border-radius: inherit;
@@ -119,9 +113,9 @@ BaseInput.styles = [theme, css `
   }
   .input {
     box-sizing: border-box;
-    height:1.4em;
+    height:1.6em;
     width: 100%;
-    font-size: 1em;
+    font-size: .8em;
     outline: 0;
     border: 0;
     margin: 0;
@@ -138,7 +132,7 @@ BaseInput.styles = [theme, css `
     align-items: center;
     box-shadow: 0 .5px .1em var(--shadow);
     background-color:var(--input-false);
-    margin: auto .24em;
+    
   }
   .range input~i {
     position: absolute;
@@ -174,6 +168,12 @@ BaseInput.styles = [theme, css `
     box-shadow: 0 .1em .1em var(--shadow);
   }
   `];
+__decorate([
+    query("input")
+], BaseInput.prototype, "_input", void 0);
+__decorate([
+    query(".range i")
+], BaseInput.prototype, "_ranged", void 0);
 __decorate([
     property()
 ], BaseInput.prototype, "label", void 0);

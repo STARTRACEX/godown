@@ -5,38 +5,34 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, query } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { name, theme } from "../config.js";
 let ExpInput = class ExpInput extends LitElement {
     constructor() {
         super(...arguments);
         this.label = "";
         this.name = "";
-        this.pla = "";
+        this.pla = undefined;
         this.type = "text";
         this.value = "";
         this.def = "";
         this.base = "outline";
         this.offset = "";
     }
-    get _input() {
-        var _a;
-        return (_a = this.renderRoot) === null || _a === void 0 ? void 0 : _a.querySelector('input');
-    }
     render() {
         if (!this.name)
             this.name = this.label || this.type;
         return html `<div class=${this.base}>
-    ${this.type !== "textarea" ? html `<input class="input" required title="" value=${this.value || this.def} @input=${this._handleInput} type=${this.type} placeholder=${this.pla} name=${this.name}>` : html `<textarea class="input" required title="" value=${this.value || this.def} @input=${this._handleInput} placeholder=${this.pla} name=${this.name}></textarea>`}
-    <fieldset>
-      <legend><span>${this.label}</span></legend>
-    </fieldset><style>:valid~fieldset legend,:focus~fieldset legend{margin-left: ${this.offset || 0} !important;}</style>
-  </div>`;
+    ${this.type !== "textarea" ? html `<input class="input" required title="" value=${this.value} @input=${this._handleInput} type=${this.type} placeholder=${ifDefined(this.pla)}>` : html `<textarea class="input" required title="" value=${this.value || this.def} @input=${this._handleInput} placeholder=${ifDefined(this.pla)}></textarea>`}
+  <fieldset>
+    <legend><span>${this.label}<slot></slot></span></legend>
+  </fieldset><style>:valid~fieldset legend,:focus~fieldset legend{margin-left: ${this.offset || 0} !important;}</style>
+</div>`;
     }
     firstUpdated() {
-        var _a;
         if (!this.def)
-            this.def = (_a = this.value) !== null && _a !== void 0 ? _a : "";
+            this.def = this.value || "";
         if (!this.value)
             this.value = this.def;
     }
@@ -55,9 +51,9 @@ let ExpInput = class ExpInput extends LitElement {
 ExpInput.styles = [theme, css `
     :host{
       display: inline-block;
-      height: 100% !important;
-      width: 100%;
-      min-height:1.6em;
+      width: 12em;
+      color: var(--text);
+      border-color: var(--input-outline);
     }
     .input:focus {
       --input-outline: var(--input-outline-focus) !important;
@@ -65,16 +61,13 @@ ExpInput.styles = [theme, css `
     div:hover {
       --input-background: var(--input-background-hover) !important;
     }
-    .outline fieldset {
-      border-color: var(--input-outline);
-    }
     .underline::after {
       content: "";
       position: absolute;
       bottom: -.1em;
-      width: calc(100% - .5em);
-      margin: 0 .25em;
-      height: .1em;
+      width: 100%;
+      height: .18em;
+      bottom:0;
       border-radius: inherit;
       background-color: var(--input-outline);
     }
@@ -82,6 +75,7 @@ ExpInput.styles = [theme, css `
       border-color: transparent !important;
     }
     .outline fieldset{
+      border-color: inherit !important;
       border: .18em solid;
     }
     .filed {
@@ -101,30 +95,43 @@ ExpInput.styles = [theme, css `
       color: inherit;
       font-size: inherit;
       font-family: inherit;
-      transition: all .3s,height 0s;
+      transition: all .2s,height 0s;
     }
     div {
+      border-color: inherit;
       position: relative;
       width: 100%;
-      height:100%;
       display: inline-flex;
       min-height:inherit;
     }
     textarea.input{
-      margin-top:1em;
+      margin-top: .5em;
+      margin-bottom: .18em;
       resize: vertical;
       height: inherit;
+      min-height: 1.72em;
     }
     input.input{
-      height: 1.6em;
+      height: 1.9em;
+    }
+    .with-label .input{
+      margin-top: .71em;
+    }
+    .outline .input{
+      margin-left:.18em;
+      margin-right:.18em;
+    }
+    .underline .input{
+      margin-left:.12em;
+      margin-right:.12em;
     }
     .input {
       width: 100%;
       min-height:inherit;
-      margin-top: .71em;
+      margin-top: .45em;
       border: 0;
       box-sizing: border-box;
-      padding: .3em;
+      padding: .2em;
       font-size: inherit;
       outline: 0;
       background-color: transparent;
@@ -132,54 +139,43 @@ ExpInput.styles = [theme, css `
       overflow-y: hidden;
     }
     fieldset {
+      box-sizing: border-box;
+      position: absolute;
       background-color: var(--input-background);
       pointer-events: none;
-      padding: 0;
-      margin: 0;
+      padding: 0px;
       position: absolute;
       height: 100%;
-      bottom: 0;
+      margin: 0;
       width: inherit;
-      margin: -.1em;
     }
     legend span {
+      font-size: .1em;
       display: inline-block;
-      padding: 0 .3em;
+      padding: 0 .2em;
       background-color: var(--input-background);
-      font-size: inherit;
+      font-size: inherit;      
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
     }
     textarea~fieldset legend {
       transform: translateY(.6em);
     }
     legend {
-      margin-left: 5px;
       margin: 0;
       padding: 0;
-      transition: all .3s;
       width: 0;
       height: 1em;
       transform: translateY(.8em);
     }
-    div:has(span:empty) legend {
-      display: none;
-    }
-    div:has(span:empty) .input {
-      margin: 0;
-    }
-    :focus+fieldset legend,
-    :valid+fieldset legend {
-      transform: translateY(-.19em) !important;
-    }
     .filed span{
       background-color:transparent;
     }
-    :focus+fieldset span,
-    :valid+fieldset span {
-      font-size: 70%;
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-  `];
+    :focus+fieldset legend,
+    :valid+fieldset legend {
+      transform: translateY(-.19em) scale(.7);
+    }`
+];
 __decorate([
     property()
 ], ExpInput.prototype, "label", void 0);
@@ -204,6 +200,9 @@ __decorate([
 __decorate([
     property()
 ], ExpInput.prototype, "offset", void 0);
+__decorate([
+    query('.input')
+], ExpInput.prototype, "_input", void 0);
 ExpInput = __decorate([
     customElement(name.tag('exp-input'))
 ], ExpInput);

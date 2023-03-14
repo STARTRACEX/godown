@@ -1,11 +1,8 @@
 import { LitElement, html, css } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { customElement, property, query } from "lit/decorators.js";
 import { name, theme } from "../config";
 @customElement(name.tag("base-switch"))
 export class BaseSwitch extends LitElement {
-  get _input() {
-    return this.renderRoot?.querySelector('input') ?? null;
-  }
   static styles = [theme, css`:host,span {
       display: inline-flex;
       font-size: inherit;
@@ -13,7 +10,6 @@ export class BaseSwitch extends LitElement {
       align-items: center;
       border-radius: inherit;
     }
-
     input {
       margin: 0;
       outline: none;
@@ -28,7 +24,6 @@ export class BaseSwitch extends LitElement {
       border-radius: inherit;
       transition: all .3s;
     }
-
     aside {
       pointer-events: none;
       transition: .3s;
@@ -40,46 +35,37 @@ export class BaseSwitch extends LitElement {
       overflow: hidden;
       border-radius: inherit;
     }
-
     aside div {
       height: 100%;
     }
-
     input[disabled]~aside{
       filter:brightness(.87) ;
     }
-
     .rect .always {
       display: none;
     }
-
     .always {
       position: absolute;
     }
-
     .rect aside {
       height: 100%;
       width: 100%;
       left: 0;
     }
-
     .rect .true,
     .rect .false {
       width: 50%;
       text-align: center;
       transition: all .3s;
     }
-
     .rect input:checked~aside .true,
     .rect .false {
       background-color: var(--input-true);
     }
-
     .rect input:checked~aside .false,
     .rect .true {
       background-color: var(--input-false);
     }
-
     .fat aside {
       width: 1.20em;
       height: 1.20em;
@@ -90,20 +76,16 @@ export class BaseSwitch extends LitElement {
       top: .15em;
       bottom: .15em;
     }
-
     .fat {
       border-radius: 0.75em;
     }
-
     .fat input:checked {
       background-color: var(--input-true);
     }
-
     .fat input:checked~aside {
       left: calc(100% - .15em - 1.20em);
       right: 0.15em;
     }
-
     .fat input:checked~aside .true,
     .fat .false {
       display: block;
@@ -119,6 +101,7 @@ export class BaseSwitch extends LitElement {
   @property() def = "";
   @property() name = "checkbox";
   @property() value = "on";
+  @query('input') private _input : HTMLInputElement;
   render() {
     return html`<span class=${this.fat ? "fat" : "rect"}>
     <input @change=${this._handleChange} ?disabled=${this.disabled} ?checked=${this.checked} name=${this.name} value=${this.value} type="checkbox" >

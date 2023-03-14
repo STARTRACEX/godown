@@ -1,4 +1,5 @@
 import { LitElement } from 'lit';
+import "./down-drop";
 export declare class AsideNav extends LitElement {
     m: number;
     position: string;
@@ -7,11 +8,11 @@ export declare class AsideNav extends LitElement {
 }
 export declare class NavLayout extends LitElement {
     static styles: import("lit").CSSResult[];
-    title: string;
+    host: string;
+    subhead: string;
     set: number;
     foo: boolean;
     render(): import("lit-html").TemplateResult<1>;
-    subhead(): import("lit-html").TemplateResult<1>;
     opt(): import("lit-html").TemplateResult<1>;
     footer(): import("lit-html").TemplateResult<1>;
 }

@@ -4,11 +4,11 @@ export declare class LabelInput extends LitElement {
     type: inputtype;
     label: string;
     def: string;
-    pla: string;
+    pla: any;
     name: string;
     value: string;
     static styles: import("lit").CSSResult[];
-    get _input(): HTMLInputElement;
+    private _input;
     render(): import("lit-html").TemplateResult<1>;
     firstUpdated(): void;
     _handleInput(i: any): void;

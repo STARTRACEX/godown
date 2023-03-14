@@ -1,4 +1,4 @@
-# godown-ui
+# godown
 
 ## Install
 

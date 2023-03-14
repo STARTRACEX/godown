@@ -1,9 +1,12 @@
 import { LitElement, html, css } from 'lit';
-import { customElement, property, query, queryAll } from 'lit/decorators.js'; 1;
-import { name,theme } from '../config';
+import { customElement, property, query, queryAll, state } from 'lit/decorators.js'; 1;
+import { name, theme } from '../config';
 @customElement(name.tag('split-input'))
 export class SplitInput extends LitElement {
-  static styles = [theme, css`div {
+  static styles = [theme, css`:host{
+      display: inline-block;
+    }
+    div {
       position: relative;
       display:inline-flex;
     }
@@ -34,28 +37,29 @@ export class SplitInput extends LitElement {
     .focus i {
       outline: .12em solid var(--input-true);
     }`];
-  render() {
-    return html`<main><div>
-  ${Array(this.max).fill(0).map((v, i) => html`<span><i></i></span>`)}
-  <input @input=${this._handleInput} value="     ">
-</div></main>`;
-  }
+  @property() name = "";
   @property() value = "";
   @property({ type: Number }) max = 6;
   @property() index = -1;
-  @query('input') input!: HTMLInputElement;
-  @queryAll('span') spans!: NodeListOf<HTMLSpanElement>;
-  current: number = 0;
-  currentValue: Array<string | null> = [];
+  @query('input') private _input: HTMLInputElement;
+  @queryAll('span') private _spans: NodeListOf<HTMLSpanElement>;
+  @state() current: number = 0;
+  @state() currentValue: Array<string | null> = [];
+  render() {
+    return html`<main><div>
+  ${Array(this.max).fill(0).map(() => html`<span><i></i></span>`)}
+  <input @input=${this._handleInput} value="     ">
+</div></main>`;
+  }
   firstUpdated() {
     this.currentValue = this.value.split('').concat(Array(this.max - this.value.length).fill(null));
     this.current = (this.index < 0 || this.index > this.max) ? this.currentValue.indexOf(null) : this.index;
-    const spans = this.shadowRoot!.querySelectorAll('span');
-    spans.forEach((span, index) => {
+    ;
+    this._spans.forEach((span, index) => {
       span.addEventListener('click', () => {
         this.current = index;
         this.focu();
-        this.input.focus();
+        this._input.focus();
       });
     });
     document.addEventListener('click', (e) => {
@@ -65,7 +69,7 @@ export class SplitInput extends LitElement {
     });
   }
   namevalue() {
-    return [this.getAttribute("name") || "", this.value];
+    return [this.name, this.value];
   }
   private _handleInput(e: InputEvent) {
     if (e.data === null) {
@@ -80,27 +84,29 @@ export class SplitInput extends LitElement {
       this.currentValue[this.current] = e.data;
       if (this.current + 1 >= this.max) {
         this.current = this.currentValue.indexOf(null);
+        if (this.current === -1) {
+          this.blur();
+        }
       } else {
         this.current += 1;
       }
     }
     this.focu();
-    const spans = this.spans;
-    spans.forEach((span, index) => {
+    this._spans.forEach((span, index) => {
       span.querySelector('i').innerText = this.currentValue[index] || '';
     });
     this.value = this.currentValue.join('');
     this.dispatchEvent(new CustomEvent('change', { detail: this.value }));
   }
   focu(i = this.current) {
-    this.spans.forEach((span) => {
+    this._spans.forEach((span) => {
       span.classList.remove('focus');
     });
-    this.spans[i]?.classList.add('focus');
-    this.input.value = "      ";
+    this._spans[i]?.classList.add('focus');
+    this._input.value = "      ";
   }
   blur(i = this.current) {
-    this.spans[i]?.classList.remove('focus');
-    this.input.blur();
+    this._spans[i]?.classList.remove('focus');
+    this._input.blur();
   }
 }

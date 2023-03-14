@@ -1,6 +1,5 @@
 import { LitElement } from "lit";
 export declare class BaseSwitch extends LitElement {
-    get _input(): HTMLInputElement;
     static styles: import("lit").CSSResult[];
     checked: boolean;
     disabled: boolean;
@@ -8,6 +7,7 @@ export declare class BaseSwitch extends LitElement {
     def: string;
     name: string;
     value: string;
+    private _input;
     render(): import("lit-html").TemplateResult<1>;
     firstUpdated(): void;
     reset(): void;

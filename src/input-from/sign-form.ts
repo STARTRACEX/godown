@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, query } from 'lit/decorators.js';
 import { name } from '../config';
+import "./label-input";
 @customElement(name.tag('sign-form'))
 export class SignForm extends LitElement {
   static styles = css`
@@ -27,8 +28,7 @@ export class SignForm extends LitElement {
   input[type="submit"]:hover,input[type="reset"]:hover{
     background-color: var(--hover);
     transform: scale(1.02);
-  }
-  `;
+  }`;
   @query("form") _from: HTMLFormElement;
   render() {
     return html`<form enctype="multipart/form-data"><slot name="pre"></slot>
@@ -66,7 +66,6 @@ export class SignForm extends LitElement {
   FormData() {
     var x = new FormData(this._from) as any;
     each(this._from, (node: any) => {
-      // 将node表单的Formdata追加到x
       if (node.namevalue) {
         var [name, value] = node.namevalue();
         if (name && typeof value !== 'object' && !x.has(name)) {
@@ -84,7 +83,7 @@ export class SignForm extends LitElement {
     return x;
   }
 }
-function each(node, callback) {
+function each(node:Node, callback: (node: Node) => void) {
   if (node) {
     callback(node);
     for (let i of node.childNodes) {

@@ -37,7 +37,6 @@ let DownDrop = class DownDrop extends LitElement {
         const offsets = ((_a = this.offsetParent) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect()) || document.body.getBoundingClientRect();
         const div = this.div;
         const divLeft = div.getBoundingClientRect().left;
-        const divTop = div.getBoundingClientRect().top;
         const divRight = div.getBoundingClientRect().right;
         const RightWidth = offsets.width - (divRight - offsets.x);
         const LeftWidth = offsets.width - (offsets.right - divLeft);

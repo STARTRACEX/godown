@@ -1,4 +1,5 @@
 export const name = {
+    host: "Host",
     prefix: "",
     suffix: "",
     tag: (origin) => name.prefix + origin + name.suffix,

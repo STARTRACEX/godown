@@ -51,7 +51,6 @@ export class DownDrop extends LitElement {
     const offsets = this.offsetParent?.getBoundingClientRect() || document.body.getBoundingClientRect();
     const div = this.div;
     const divLeft = div.getBoundingClientRect().left;
-    const divTop = div.getBoundingClientRect().top;
     const divRight = div.getBoundingClientRect().right;
     const RightWidth = offsets.width - (divRight - offsets.x);
     const LeftWidth = offsets.width - (offsets.right - divLeft);

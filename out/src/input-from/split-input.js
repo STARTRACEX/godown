@@ -5,12 +5,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { LitElement, html, css } from 'lit';
-import { customElement, property, query, queryAll } from 'lit/decorators.js';
+import { customElement, property, query, queryAll, state } from 'lit/decorators.js';
 1;
 import { name, theme } from "../config.js";
 let SplitInput = class SplitInput extends LitElement {
     constructor() {
         super(...arguments);
+        this.name = "";
         this.value = "";
         this.max = 6;
         this.index = -1;
@@ -18,20 +19,20 @@ let SplitInput = class SplitInput extends LitElement {
         this.currentValue = [];
     }
     render() {
-        return html`<main><div>
-  ${Array(this.max).fill(0).map((v, i) => html`<span><i></i></span>`)}
+        return html `<main><div>
+  ${Array(this.max).fill(0).map(() => html `<span><i></i></span>`)}
   <input @input=${this._handleInput} value="     ">
 </div></main>`;
     }
     firstUpdated() {
         this.currentValue = this.value.split('').concat(Array(this.max - this.value.length).fill(null));
         this.current = (this.index < 0 || this.index > this.max) ? this.currentValue.indexOf(null) : this.index;
-        const spans = this.shadowRoot.querySelectorAll('span');
-        spans.forEach((span, index) => {
+        ;
+        this._spans.forEach((span, index) => {
             span.addEventListener('click', () => {
                 this.current = index;
                 this.focu();
-                this.input.focus();
+                this._input.focus();
             });
         });
         document.addEventListener('click', (e) => {
@@ -41,7 +42,7 @@ let SplitInput = class SplitInput extends LitElement {
         });
     }
     namevalue() {
-        return [this.getAttribute("name") || "", this.value];
+        return [this.name, this.value];
     }
     _handleInput(e) {
         if (e.data === null) {
@@ -58,14 +59,16 @@ let SplitInput = class SplitInput extends LitElement {
             this.currentValue[this.current] = e.data;
             if (this.current + 1 >= this.max) {
                 this.current = this.currentValue.indexOf(null);
+                if (this.current === -1) {
+                    this.blur();
+                }
             }
             else {
                 this.current += 1;
             }
         }
         this.focu();
-        const spans = this.spans;
-        spans.forEach((span, index) => {
+        this._spans.forEach((span, index) => {
             span.querySelector('i').innerText = this.currentValue[index] || '';
         });
         this.value = this.currentValue.join('');
@@ -73,19 +76,22 @@ let SplitInput = class SplitInput extends LitElement {
     }
     focu(i = this.current) {
         var _a;
-        this.spans.forEach((span) => {
+        this._spans.forEach((span) => {
             span.classList.remove('focus');
         });
-        (_a = this.spans[i]) === null || _a === void 0 ? void 0 : _a.classList.add('focus');
-        this.input.value = "      ";
+        (_a = this._spans[i]) === null || _a === void 0 ? void 0 : _a.classList.add('focus');
+        this._input.value = "      ";
     }
     blur(i = this.current) {
         var _a;
-        (_a = this.spans[i]) === null || _a === void 0 ? void 0 : _a.classList.remove('focus');
-        this.input.blur();
+        (_a = this._spans[i]) === null || _a === void 0 ? void 0 : _a.classList.remove('focus');
+        this._input.blur();
     }
 };
-SplitInput.styles = [theme, css `div {
+SplitInput.styles = [theme, css `:host{
+      display: inline-block;
+    }
+    div {
       position: relative;
       display:inline-flex;
     }
@@ -114,8 +120,11 @@ SplitInput.styles = [theme, css `div {
       bottom: 0;
     }
     .focus i {
-      outline: 1.2em solid var(--input-true);
+      outline: .12em solid var(--input-true);
     }`];
+__decorate([
+    property()
+], SplitInput.prototype, "name", void 0);
 __decorate([
     property()
 ], SplitInput.prototype, "value", void 0);
@@ -127,10 +136,16 @@ __decorate([
 ], SplitInput.prototype, "index", void 0);
 __decorate([
     query('input')
-], SplitInput.prototype, "input", void 0);
+], SplitInput.prototype, "_input", void 0);
 __decorate([
     queryAll('span')
-], SplitInput.prototype, "spans", void 0);
+], SplitInput.prototype, "_spans", void 0);
+__decorate([
+    state()
+], SplitInput.prototype, "current", void 0);
+__decorate([
+    state()
+], SplitInput.prototype, "currentValue", void 0);
 SplitInput = __decorate([
     customElement(name.tag('split-input'))
 ], SplitInput);

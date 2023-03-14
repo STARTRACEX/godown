@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { LitElement, html, css } from 'lit';
 import { customElement, query } from 'lit/decorators.js';
 import { name } from "../config.js";
+import "./label-input.js";
 let SignForm = class SignForm extends LitElement {
     render() {
         return html `<form enctype="multipart/form-data"><slot name="pre"></slot>
@@ -49,7 +50,6 @@ let SignForm = class SignForm extends LitElement {
     FormData() {
         var x = new FormData(this._from);
         each(this._from, (node) => {
-            // 将node表单的Formdata追加到x
             if (node.namevalue) {
                 var [name, value] = node.namevalue();
                 if (name && typeof value !== 'object' && !x.has(name)) {
@@ -91,8 +91,7 @@ SignForm.styles = css `
   input[type="submit"]:hover,input[type="reset"]:hover{
     background-color: var(--hover);
     transform: scale(1.02);
-  }
-  `;
+  }`;
 __decorate([
     query("form")
 ], SignForm.prototype, "_from", void 0);

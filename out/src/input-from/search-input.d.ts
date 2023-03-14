@@ -9,11 +9,7 @@ export declare class SearchInput extends LitElement {
     name: string;
     value: string;
     list: any[];
-    submit: (x: any) => string[];
-    static styles: import("lit").CSSResult[];
-    render(): import("lit-html").TemplateResult<1>;
-    _handleSubmit(e: any): void;
-    _handleInput(e: any): void;
+    useinfer: (x: string) => Array;
 }
 export declare class SearchW extends LitElement {
     static styles: import("lit").CSSResult;

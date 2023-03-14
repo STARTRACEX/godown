@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { name, theme } from '../config';
+import "./down-drop";
 @customElement(name.tag('aside-nav'))
 export class AsideNav extends LitElement {
   @property({ type: Number }) m = 0;
@@ -94,14 +95,15 @@ export class NavLayout extends LitElement {
     justify-content: center;
     align-items: center;
   }`];
-  @property() title = '';
+  @property() host = '';
+  @property() subhead = '';
   @property({ type: Number }) set = 2;
   @property({ type: Boolean }) foo = false;
   render() {
     return html`<nav>
       <h1>
-        <a href="/">TITLE</a>
-        ${this.subhead()}
+        <a href="/">${this.host||name.host}</a>
+        ${this.subhead && html`<span>|</span><span>${this.subhead}</span>`}
       </h1>
       <div>
         ${this.opt()}
@@ -109,10 +111,6 @@ export class NavLayout extends LitElement {
     </nav>
     <main style="flex:1;width:95%"><slot></slot></main>
     ${this.footer()}`;
-  }
-  subhead() {
-    if (!this.title) return;
-    return html`<span>|</span> <span>${this.title}</span>`;
   }
   opt() {
     if (this.set >= 2) {
@@ -124,9 +122,7 @@ export class NavLayout extends LitElement {
   }
   footer() {
     if (this.foo) return;
-    return html`<footer>
-      <slot name="footer"></slot>
-    </footer>`;
+    return html`<footer><slot name="footer"></slot></footer>`;
   }
 }
 declare global {

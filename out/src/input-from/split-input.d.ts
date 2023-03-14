@@ -1,14 +1,15 @@
 import { LitElement } from 'lit';
 export declare class SplitInput extends LitElement {
-    static styles: import("lit").CSSResult;
-    render(): import("lit-html").TemplateResult<1>;
+    static styles: import("lit").CSSResult[];
+    name: string;
     value: string;
     max: number;
     index: number;
-    input: HTMLInputElement;
-    spans: NodeListOf<HTMLSpanElement>;
+    private _input;
+    private _spans;
     current: number;
     currentValue: Array<string | null>;
+    render(): import("lit-html").TemplateResult<1>;
     firstUpdated(): void;
     namevalue(): string[];
     private _handleInput;

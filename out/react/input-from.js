@@ -7,7 +7,7 @@ export const LabelInput = createComponent({
     react: React
 });
 export const SignForm = createComponent({
-    tagName: 'sign-form',
+    tagName: 'input-form',
     elementClass: X.SignForm,
     react: React
 });

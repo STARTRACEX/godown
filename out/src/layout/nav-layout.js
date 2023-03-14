@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { name, theme } from "../config.js";
+import "./down-drop.js";
 let AsideNav = class AsideNav extends LitElement {
     constructor() {
         super(...arguments);
@@ -52,15 +53,16 @@ export { AsideNav };
 let NavLayout = class NavLayout extends LitElement {
     constructor() {
         super(...arguments);
-        this.title = '';
+        this.host = '';
+        this.subhead = '';
         this.set = 2;
         this.foo = false;
     }
     render() {
         return html `<nav>
       <h1>
-        <a href="/">TITLE</a>
-        ${this.subhead()}
+        <a href="/">${this.host || name.host}</a>
+        ${this.subhead && html `<span>|</span><span>${this.subhead}</span>`}
       </h1>
       <div>
         ${this.opt()}
@@ -68,11 +70,6 @@ let NavLayout = class NavLayout extends LitElement {
     </nav>
     <main style="flex:1;width:95%"><slot></slot></main>
     ${this.footer()}`;
-    }
-    subhead() {
-        if (!this.title)
-            return;
-        return html `<span>|</span> <span>${this.title}</span>`;
     }
     opt() {
         if (this.set >= 2) {
@@ -85,9 +82,7 @@ let NavLayout = class NavLayout extends LitElement {
     footer() {
         if (this.foo)
             return;
-        return html `<footer>
-      <slot name="footer"></slot>
-    </footer>`;
+        return html `<footer><slot name="footer"></slot></footer>`;
     }
 };
 NavLayout.styles = [theme, css `
@@ -153,7 +148,10 @@ NavLayout.styles = [theme, css `
   }`];
 __decorate([
     property()
-], NavLayout.prototype, "title", void 0);
+], NavLayout.prototype, "host", void 0);
+__decorate([
+    property()
+], NavLayout.prototype, "subhead", void 0);
 __decorate([
     property({ type: Number })
 ], NavLayout.prototype, "set", void 0);

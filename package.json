@@ -1,6 +1,6 @@
 {
   "name": "godown",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "main": "./out/index.js",
   "type": "module",
   "scripts": {
@@ -9,7 +9,10 @@
     "babel": "babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["godown","components"],
+  "keywords": [
+    "godown",
+    "components"
+  ],
   "author": "startrace",
   "license": "MIT",
   "description": "simple,sylized,semantic components",

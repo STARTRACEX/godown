@@ -1,4 +1,5 @@
 export declare const name: {
+    host: string;
     prefix: string;
     suffix: string;
     tag: (origin: string) => string;

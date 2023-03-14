@@ -14,7 +14,7 @@
     "experimentalDecorators": true,
     "useDefineForClassFields": false,
     "sourceMap": false,
-    /*  */
+    
     "allowJs": false,
     "rootDir": "./",
     "watch": true,

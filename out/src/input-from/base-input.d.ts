@@ -1,11 +1,11 @@
 import { LitElement } from 'lit';
 declare type inputtype = "hidden" | "text" | "search" | "tel" | "url" | "email" | "password" | "datetime" | "date" | "month" | "week" | "time" | "datetime-local" | "number" | "range" | "color" | "checkbox" | "radio" | "file" | "image";
 export declare class BaseInput extends LitElement {
-    get _input(): HTMLInputElement;
-    get _ranged(): Element;
+    private _input;
+    private _ranged;
     label: string;
     name: string;
-    pla: string;
+    pla: any;
     type: inputtype;
     value: string | number;
     def: string | number;

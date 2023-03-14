@@ -1,4 +1,5 @@
 import { LitElement } from 'lit';
+import "./label-input";
 export declare class SignForm extends LitElement {
     static styles: import("lit").CSSResult;
     _from: HTMLFormElement;

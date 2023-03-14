@@ -1,18 +1,15 @@
 import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, query } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { name, theme } from '../config';
 type inputtype = "hidden" | "text" | "search" | "tel" | "url" | "email" | "password" | "datetime" | "date" | "month" | "week" | "time" | "datetime-local" | "number" | "range" | "color" | "checkbox" | "radio" | "file" | "image";
 @customElement(name.tag('base-input'))
 export class BaseInput extends LitElement {
-  get _input() {
-    return this.shadowRoot.querySelector('input');
-  }
-  get _ranged() {
-    return this.shadowRoot.querySelector('.range i');
-  }
+  @query("input") private _input: HTMLInputElement;
+  @query(".range i") private _ranged: HTMLElement;
   @property() label = '';
   @property() name = '';
-  @property() pla = '';
+  @property() pla = undefined;
   @property() type: inputtype = 'text';
   @property() value: string | number = '';
   @property() def: string | number = '';
@@ -24,15 +21,15 @@ export class BaseInput extends LitElement {
     display: inline-flex;
     background-color: var(--input-background);
     border-radius: .2em;
-    outline:.18em solid transparent ;
+    outline: .14em solid transparent;
+    color:var(--text);
   }
   :host(:focus){
     outline-color:var(--input-outline);
   }
   div{
-    margin: 0 -.25em;
     display: flex;
-    flex:1;
+    flex: 1;
   }
   *{
     border-radius: inherit;
@@ -48,9 +45,9 @@ export class BaseInput extends LitElement {
   }
   .input {
     box-sizing: border-box;
-    height:1.4em;
+    height:1.6em;
     width: 100%;
-    font-size: 1em;
+    font-size: .8em;
     outline: 0;
     border: 0;
     margin: 0;
@@ -67,7 +64,7 @@ export class BaseInput extends LitElement {
     align-items: center;
     box-shadow: 0 .5px .1em var(--shadow);
     background-color:var(--input-false);
-    margin: auto .24em;
+    
   }
   .range input~i {
     position: absolute;
@@ -115,7 +112,7 @@ export class BaseInput extends LitElement {
       <slot name="suf"></slot></div>`;
   }
   firstUpdated() {
-    if (!this.def) this.def = this.value ?? "";
+    if (!this.def) this.def = this.value || "";
     if (!this.value) this.value = this.def;
     if (this.type === "range") {
       this._ranged.style.width = 100 * (this.value as number / (this.max - this.min)) + '%';
@@ -145,7 +142,6 @@ export class BaseInput extends LitElement {
       this._ranged.style.width = 100 * (this.value as number / (this.max - this.min)) + '%';
     } else {
       this._input.value = this.def.toString();
-
       this.value = this.def;
     }
   }
@@ -154,7 +150,7 @@ export class BaseInput extends LitElement {
       case "range":
         return html`<input type="range" @input=${this._handleRange} min=${this.min} max=${this.max} step=${this.step} value=${this.value} ><i></i>`;
       default:
-        return html`<input class="input" type=${this.type} name=${this.name} placeholder=${this.pla} value=${this.value} @input=${this._handleInput} />`;
+        return html`<input class="input" type=${this.type} placeholder=${ifDefined(this.pla)} value=${this.value} @input=${this._handleInput} />`;
     }
   }
   namevalue() {
